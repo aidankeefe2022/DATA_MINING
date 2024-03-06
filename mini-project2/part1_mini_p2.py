@@ -1,3 +1,6 @@
+import queue
+from itertools import combinations
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import math
@@ -24,38 +27,41 @@ def degree_of_vertex(edge_list):
     degree = 0
 
     return degree
-
-#TODO aidan
-def Clustering_coefficient(edge_list, vertex):
-    val = 0
+def cnd(edge_list):
     neighbor_dict = {}
-    for vertex in range(num_of_verts(edge_list)):
+    for vertex in range(1, num_of_verts(edge_list) + 1):
         for edge in edge_list:
-            if neighbor_dict[vertex] == None:
+            if vertex not in neighbor_dict.keys():
                 neighbor_dict[vertex] = []
             if edge[0] == vertex:
                 neighbor_dict[vertex].append(edge[1])
             elif edge[1] == vertex:
                 neighbor_dict[vertex].append(edge[0])
+    return neighbor_dict
+
+
+#TODO aidan
+def Clustering_coefficient(edge_list, vert):
+    val = 0
+    neighbor_dict = cnd(edge_list)
 
     num_of_edges = 0
-    for x in range(0, len(neighbor_dict[vertex])):
-
-        y = len(neighbor_dict[vertex]) - 1
+    for x in range(0, len(neighbor_dict[vert])):
+        y = len(neighbor_dict[vert]) - 1
         while (True):
             if y != x:
-                to_check = neighbor_dict[vertex][y]
-                if neighbor_dict[vertex][x] in neighbor_dict[to_check]:
+                to_check = neighbor_dict[vert][y]
+                if neighbor_dict[vert][x] in neighbor_dict[to_check]:
                     num_of_edges += 1
             else:
                 break
             y = y - 1
     # this is the math.comb function that does the same thing as n choose 2
     # this if statment is to avoid divide by zero errors
-    if math.comb(len(neighbor_dict[vertex]), 2) != 0:
-        val = num_of_edges / math.comb(len(neighbor_dict[vertex]), 2)
+    if math.comb(len(neighbor_dict[vert]), 2) != 0:
+        val = num_of_edges / math.comb(len(neighbor_dict[vert]), 2)
     else:
-        val = 0
+        val = 1
 
     return val
 
@@ -68,15 +74,36 @@ def Betweenness_centrality(edge_list):
 #TODO aidan
 def average_shortest_path_length(edge_list):
     average_length = 0
-    all_vert_comb = 0
-    for x in range(num_of_verts(edge_list)):
-        #find the comb on all vertex with not mirros and then look for the shortest path bewteen all of them this will be eaiser than dikstra bs to remove dups that scew the average
-        x =1
+    list_of_lens = []
+    list_of_verts = [x for x in range(1,num_of_verts(edge_list)+1)]
+    all_vert_comb = list(combinations(list_of_verts, 2))
+    print(all_vert_comb)
+    for vert in all_vert_comb:
+        list_of_lens.append(shortest_path_length(vert[0],vert[1],edge_list))
 
-    return average_length
+
+
+    return sum(list_of_lens)/len(list_of_lens)
 
 def shortest_path_length(vert1, vert2, edgelist):
+    n_dict = cnd(edgelist)
+    dist_dict = {}
+    already_visited = set()
+    my_queue = queue.Queue()
+    my_queue.put(vert1)
+    dist_dict[vert1] = 0
+#not done do this so it finds the shortest path between these two nodes
+    while my_queue.not_empty:
+        current_vertex = my_queue.get()
+        if current_vertex == vert2:
+            return dist_dict[current_vertex]
+        for neighbor in n_dict[current_vertex]:
+            if neighbor not in already_visited:
+                my_queue.put(neighbor)
+                already_visited.add(neighbor)
+                dist_dict[neighbor] = dist_dict[current_vertex] + 1
 
+    return dist_dict[vert2]
 
 #TODO tommy
 def adjacency_matrix(edge_list):
@@ -96,7 +123,7 @@ def create_visualization(G):
 
 #TODO aidan
 def top_ten_degree_nodes(G):
-    return sorted(G.degree, key=degree_of_vertex)
+    return [x for x in sorted(G.degree, key=degree_of_vertex)][1:10]
 
 #TODO tommy
 def top_ten_highest_betweenness_centrality(G):
@@ -113,3 +140,7 @@ def top_ten_highest_eigenvector_centrality(G):
 #TODO aidan
 def top_ten_highest_pagerank(G):
     return False
+
+
+print(average_shortest_path_length([[1,2],[2,3],[3,4],[1,5]]))
+print(Clustering_coefficient([[1,2],[2,3],[3,4],[1,5]],1))
