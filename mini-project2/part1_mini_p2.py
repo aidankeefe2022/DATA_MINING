@@ -73,17 +73,14 @@ def Betweenness_centrality(edge_list):
 
 #TODO aidan
 def average_shortest_path_length(edge_list):
-    average_length = 0
     list_of_lens = []
     list_of_verts = [x for x in range(1,num_of_verts(edge_list)+1)]
     all_vert_comb = list(combinations(list_of_verts, 2))
     print(all_vert_comb)
     for vert in all_vert_comb:
         list_of_lens.append(shortest_path_length(vert[0],vert[1],edge_list))
-
-
-
     return sum(list_of_lens)/len(list_of_lens)
+
 
 def shortest_path_length(vert1, vert2, edgelist):
     n_dict = cnd(edgelist)
@@ -92,7 +89,6 @@ def shortest_path_length(vert1, vert2, edgelist):
     my_queue = queue.Queue()
     my_queue.put(vert1)
     dist_dict[vert1] = 0
-#not done do this so it finds the shortest path between these two nodes
     while my_queue.not_empty:
         current_vertex = my_queue.get()
         if current_vertex == vert2:
@@ -107,23 +103,28 @@ def shortest_path_length(vert1, vert2, edgelist):
 
 #TODO tommy
 def adjacency_matrix(edge_list):
-    matrix = [[0 for _ in range(num_of_verts(edge_list))] for _ in range(num_of_verts(edge_list))] #this makes a sqare matrix with lengh and hight equal to the number of nodes (2D array)
+    matrix = [[0 for _ in range(num_of_verts(edge_list))] for _ in range(num_of_verts(edge_list))] #this makes a sqare matrix with lengh and hight equal to the number of nodes (2D array) filled with all zeros
 
     return matrix
 
 #TODO aidan
 def power_iteration(edge_list):
+    #do when adjmatrix is done
+
     return False
+
+
 
 #part3
 
 #TODO tommy
 def create_visualization(G):
-    return False
+    return nx.draw_networkx(G)
 
 #TODO aidan
 def top_ten_degree_nodes(G):
-    return [x for x in sorted(G.degree, key=degree_of_vertex)][1:10]
+    return sorted(G.degree(), key=lambda x: x[1], reverse=True)[:10]
+
 
 #TODO tommy
 def top_ten_highest_betweenness_centrality(G):
@@ -131,16 +132,33 @@ def top_ten_highest_betweenness_centrality(G):
 
 #TODO aidan
 def top_ten_highest_cluster_coefficient(G):
-    return False
+    x = nx.clustering(G)
+    list = []
+    for vert in x:
+        if x[vert] == 1 :
+            list.append(vert)
+    return get_degree_order_node(list_of_vertices=list,G=G)[:10]
 
+#used to order the nodes with cluster coeffiecnt of 1.0 in a way so they can be logically dedciminated
+def get_degree_order_node(list_of_vertices, G):
+    list = []
+    for v in list_of_vertices:
+        list.append((G.degree(nbunch=v), v))
+    return sorted(list, reverse=True)
 #TODO tommy
 def top_ten_highest_eigenvector_centrality(G):
     return False
 
 #TODO aidan
 def top_ten_highest_pagerank(G):
-    return False
+    list = []
+    dict = nx.pagerank(G)
+    for v in dict:
+        list.append((v,dict[v]))
+    return sorted(list, key=lambda x: x[1], reverse=True)[:10]
 
-
-print(average_shortest_path_length([[1,2],[2,3],[3,4],[1,5]]))
-print(Clustering_coefficient([[1,2],[2,3],[3,4],[1,5]],1))
+print(top_ten_highest_cluster_coefficient(G))
+# print(average_shortest_path_length([[1,2],[2,3],[3,4],[1,5]]))
+# print(Clustering_coefficient([[1,2],[2,3],[3,4],[1,5]],1))
+print(top_ten_degree_nodes(G))
+print(top_ten_highest_pagerank(G))
