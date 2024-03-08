@@ -23,10 +23,10 @@ def num_of_verts(edge_list):
     return len(vert_set)
 
 #TODO tommy
-def degree_of_vertex(edge_list):
-    degree = 0
+def degree_of_vertex(edge_list, vertex):
+    return len(cnd(edge_list)[vertex])
 
-    return degree
+#creates a dict that is in the form of vertex : [list of its neighbor nodes]
 def cnd(edge_list):
     neighbor_dict = {}
     for vertex in range(1, num_of_verts(edge_list) + 1):
@@ -40,7 +40,6 @@ def cnd(edge_list):
     return neighbor_dict
 
 
-#TODO aidan
 def Clustering_coefficient(edge_list, vert):
     val = 0
     neighbor_dict = cnd(edge_list)
@@ -71,7 +70,6 @@ def Betweenness_centrality(edge_list):
 
     return centrality
 
-#TODO aidan
 def average_shortest_path_length(edge_list):
     list_of_lens = []
     list_of_verts = [x for x in range(1,num_of_verts(edge_list)+1)]
