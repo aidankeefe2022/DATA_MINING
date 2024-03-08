@@ -1,6 +1,6 @@
 import queue
 from itertools import combinations
-
+import test_case_graphs
 import networkx as nx
 import matplotlib.pyplot as plt
 import math
@@ -22,14 +22,20 @@ def num_of_verts(edge_list):
 
     return len(vert_set)
 
-#TODO tommy
+
 def degree_of_vertex(edge_list, vertex):
     return len(cnd(edge_list)[vertex])
 
 #creates a dict that is in the form of vertex : [list of its neighbor nodes]
 def cnd(edge_list):
+    if any(0 in t for t in edge_list):
+        var1 = 0
+        var2 = 0
+    else:
+        var1 = 1
+        var2 = 1
     neighbor_dict = {}
-    for vertex in range(1, num_of_verts(edge_list) + 1):
+    for vertex in range(var1, num_of_verts(edge_list) + var2):
         for edge in edge_list:
             if vertex not in neighbor_dict.keys():
                 neighbor_dict[vertex] = []
@@ -72,9 +78,11 @@ def Betweenness_centrality(edge_list):
 
 def average_shortest_path_length(edge_list):
     list_of_lens = []
-    list_of_verts = [x for x in range(1,num_of_verts(edge_list)+1)]
+    if any(0 in t for t in edge_list):
+        list_of_verts = [x for x in range(0, num_of_verts(edge_list))]
+    else:
+        list_of_verts = [x for x in range(1,num_of_verts(edge_list)+1)]
     all_vert_comb = list(combinations(list_of_verts, 2))
-    print(all_vert_comb)
     for vert in all_vert_comb:
         list_of_lens.append(shortest_path_length(vert[0],vert[1],edge_list))
     return sum(list_of_lens)/len(list_of_lens)
@@ -119,7 +127,7 @@ def power_iteration(edge_list):
 def create_visualization(G):
     return nx.draw_networkx(G)
 
-#TODO aidan
+
 def top_ten_degree_nodes(G):
     return sorted(G.degree(), key=lambda x: x[1], reverse=True)[:10]
 
@@ -137,7 +145,7 @@ def top_ten_highest_cluster_coefficient(G):
             list.append(vert)
     return get_degree_order_node(list_of_vertices=list,G=G)[:10]
 
-#used to order the nodes with cluster coeffiecnt of 1.0 in a way so they can be logically dedciminated
+#used to order the nodes with cluster coeffiecnt of 1.0 in a way so they can be logically deciminated
 def get_degree_order_node(list_of_vertices, G):
     list = []
     for v in list_of_vertices:
@@ -155,8 +163,4 @@ def top_ten_highest_pagerank(G):
         list.append((v,dict[v]))
     return sorted(list, key=lambda x: x[1], reverse=True)[:10]
 
-print(top_ten_highest_cluster_coefficient(G))
-# print(average_shortest_path_length([[1,2],[2,3],[3,4],[1,5]]))
-# print(Clustering_coefficient([[1,2],[2,3],[3,4],[1,5]],1))
-print(top_ten_degree_nodes(G))
-print(top_ten_highest_pagerank(G))
+
