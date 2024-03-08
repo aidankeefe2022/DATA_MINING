@@ -9,8 +9,7 @@ f = open("fb-pages-tvshow.edges", "rb")
 
 G = nx.read_edgelist(f, delimiter=",")
 f.close()
-print(G)
-print([len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)])
+
 
 #Part 2
 
@@ -164,3 +163,4 @@ def top_ten_highest_pagerank(G):
     return sorted(list, key=lambda x: x[1], reverse=True)[:10]
 
 
+print(nx.average_shortest_path_length(test_case_graphs.g7))

@@ -102,6 +102,7 @@ class MyTestCase(unittest.TestCase):
                                                                              [0, 0, 0, 0, 0, 1, 0, 1,],
                                                                              [1, 0, 0, 0, 0, 0, 1, 0,]])
 
+    #this took 3 minuets to run on my computer
     def test_average_shortest_path_length(self):
         self.assertEqual(average_shortest_path_length(test_case_graphs.graph_0), 1.8666666666666667)
         self.assertEqual(average_shortest_path_length(test_case_graphs.graph_2), 1.3)
@@ -109,7 +110,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(average_shortest_path_length(test_case_graphs.graph_4), 17.0)
         self.assertEqual(average_shortest_path_length(test_case_graphs.graph_5), 1.0)
         self.assertEqual(average_shortest_path_length(test_case_graphs.graph_6), 2.2857142857142856)
-        #self.assertEqual(average_shortest_path_length(test_case_graphs.graph_7), 2.6090452261306534)
+        self.assertEqual(average_shortest_path_length(test_case_graphs.graph_7), 2.6560804020100504)
         self.assertEqual(average_shortest_path_length(test_case_graphs.graph_8), 2.0785858585858588)
 if __name__ == '__main__':
     unittest.main()
