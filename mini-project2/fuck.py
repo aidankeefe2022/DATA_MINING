@@ -108,10 +108,11 @@ def shortest_path_length(vert1, vert2, edgelist):
 
 #TODO tommy
 def adjacency_matrix(edge_list):
-    matrix = [[0 for _ in range(num_of_verts(edge_list))] for _ in range(num_of_verts(edge_list))] #this makes a sqare matrix with lengh and hight equal to the number of nodes (2D array) filled with all zeros
+    if any(0 in t for t in edge_list):
+        matrix = [[0 for _ in range(num_of_verts(edge_list) - 1)] for _ in range(num_of_verts(edge_list)  - 1)] #this makes a sqare matrix with lengh and hight equal to the number of nodes (2D array) filled with all zeros
 
     for edge in edge_list:
-        matrix[edge[0]][edge[1]] = 1
+        matrix[edge[0] - 1][edge[1] - 1] = 1
 
     return matrix
 
@@ -136,6 +137,7 @@ def top_ten_degree_nodes(G):
 
 #TODO tommy
 def top_ten_highest_betweenness_centrality(G):
+    list1 = []
     dict1 = nx.betweenness_centrality(G)
     for v in dict1.keys():
         list1.append((dict1[v], v))
@@ -160,6 +162,7 @@ def get_degree_order_node(list_of_vertices, G):
 #TODO tommy
 def top_ten_highest_eigenvector_centrality(G):
     dict1 = nx.eigenvector_centrality(G)
+    list1 = []
     for v in dict1.keys():
         list1.append((dict1[v], v))
 

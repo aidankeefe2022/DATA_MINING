@@ -12,7 +12,13 @@ f.close()
 
 
 #Part 2
+def list_of_nodes(edge_list):
+    vert_set  = set()
+    for x in edge_list:
+        vert_set.add(x[0])
+        vert_set.add(x[1])
 
+    return sorted(vert_set)
 def num_of_verts(edge_list):
     vert_set  = set()
     for x in edge_list:
@@ -70,8 +76,41 @@ def Clustering_coefficient(edge_list, vert):
     return val
 
 #TODO tommy
-def Betweenness_centrality(edge_list):
+def Betweenness_centrality(edge_list, vertex):
     centrality = 0
+    paths = []
+    second_paths_list = []
+    G = nx.from_edgelist(edge_list)
+    for t in list(combinations(list_of_nodes(edge_list),2)):
+        for x in nx.all_shortest_paths(G, t[0], t[1]):
+            if len(x) != 0:
+                paths.append(x)
+    for path in paths:
+        if vertex in path[1:-1]:
+            second_paths_list.append(path)
+
+    #the paths of same end points with vert / by total bum of paths with out
+    tracker_set = set()
+    for path in second_paths_list:
+        count = 0
+        count_of_total = 0
+        x1 = path[0]
+        x2 = path[-1]
+        if (x1,x2) not in tracker_set:
+            tracker_set.add((x1,x2))
+            for path2 in second_paths_list:
+                if path2[0] == x1 and path2[-1] == x2:
+                    count+=1
+        for p in paths:
+            if p[0] == x1 and p[-1] == x2:
+                count_of_total += 1
+
+
+
+
+        centrality += count/count_of_total
+
+
 
     return centrality
 
@@ -108,7 +147,13 @@ def shortest_path_length(vert1, vert2, edgelist):
 
 #TODO tommy
 def adjacency_matrix(edge_list):
-    matrix = [[0 for _ in range(num_of_verts(edge_list))] for _ in range(num_of_verts(edge_list))] #this makes a sqare matrix with lengh and hight equal to the number of nodes (2D array) filled with all zeros
+    if any(0 in t for t in edge_list):
+        matrix = [[0 for _ in range(num_of_verts(edge_list))] for _ in range(num_of_verts(edge_list))]  # this makes a sqare matrix with lengh and hight equal to the number of nodes (2D array) filled with all zeros
+    else:
+        matrix = [[0 for _ in range(num_of_verts(edge_list))] for _ in range(num_of_verts(edge_list))]
+    for edge in edge_list:
+        matrix[edge[0] - 1][edge[1] - 1] = 1
+        matrix[edge[1] - 1][edge[0] - 1] = 1
 
     return matrix
 
