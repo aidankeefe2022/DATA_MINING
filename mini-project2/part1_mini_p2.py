@@ -178,7 +178,12 @@ def top_ten_degree_nodes(G):
 
 #TODO tommy
 def top_ten_highest_betweenness_centrality(G):
-    return False
+    list1 = []
+    dict1 = nx.betweenness_centrality(G)
+    for v in dict1.keys():
+        list1.append((dict1[v], v))
+
+    return sorted(list1, reverse=True)[:10]
 
 #TODO aidan
 def top_ten_highest_cluster_coefficient(G):
@@ -197,8 +202,12 @@ def get_degree_order_node(list_of_vertices, G):
     return sorted(list, reverse=True)
 #TODO tommy
 def top_ten_highest_eigenvector_centrality(G):
-    return False
+    dict1 = nx.eigenvector_centrality(G)
+    list1 = []
+    for v in dict1.keys():
+        list1.append((dict1[v], v))
 
+    return sorted(list1, reverse=True)[:10]
 #TODO aidan
 def top_ten_highest_pagerank(G):
     list = []
@@ -207,5 +216,7 @@ def top_ten_highest_pagerank(G):
         list.append((v,dict[v]))
     return sorted(list, key=lambda x: x[1], reverse=True)[:10]
 
+print(G)
+#print(nx.average_shortest_path_length(G))
+print(math.log(3892,10))
 
-print(nx.average_shortest_path_length(test_case_graphs.g7))
