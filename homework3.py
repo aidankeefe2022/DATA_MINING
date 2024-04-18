@@ -116,7 +116,7 @@ def average_clust_co(G):
 def prestige_my_version(input_G, iter):
     dict_answer = {}
     adj_matrix = nx.adjacency_matrix(input_G).todense() #turns the nx directed graph in to an adj. matrix
-    adj_matrix = np.transpose(adj_matrix)
+    
     p = [[float(1) for _ in range(len(adj_matrix[0]))]]
     #this is the main power iteration loop
     for i in range(iter):

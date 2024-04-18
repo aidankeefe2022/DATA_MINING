@@ -216,7 +216,5 @@ def top_ten_highest_pagerank(G):
         list.append((v,dict[v]))
     return sorted(list, key=lambda x: x[1], reverse=True)[:10]
 
-print(G)
-#print(nx.average_shortest_path_length(G))
-print(math.log(3892,10))
+
 
