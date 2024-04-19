@@ -6,8 +6,6 @@ import random
 
 #TODO: first to get it done
 def k_means_clustering(data_matrix, k, epsilon):
-    # Function body left blank
-    iteration = 0
     clusters = {}
     clusters_list = []
     mean_points = []
