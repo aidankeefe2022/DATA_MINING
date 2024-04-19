@@ -22,15 +22,17 @@ def Question_1():
 
 def Question_2():
     pca = PCA()
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    pca_transform = pca.fit_transform(X_scaled)
+    # scaler = StandardScaler()
+    # X_scaled = scaler.fit_transform(X)
+    pca_transform = pca.fit_transform(X)
     pca_transform = pd.DataFrame(pca_transform, columns=headers.values[0:16])
     var = pca_transform.var()
+    var = var/sum(var)
     var.plot.bar()
     plt.xlabel('Principal components')
     plt.ylabel('Variance')
     plt.show()
+    plt.savefig('Q2_pca.png')
 
 # Question_1()
 Question_2()
